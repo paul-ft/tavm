@@ -10,20 +10,20 @@
 struct arguments* parse(int argc, char *argv[])
 {
 	int opt=0;
-	struct arguments *options=&(struct arguments){.ram_size=0, .verbose_mode=0};
-	while ((opt=getopt(argc,argv,"m:vh"))!=-1)
+	struct arguments *options=&(struct arguments){.ram_size=0, .log_level=7};
+	while ((opt=getopt(argc,argv,"m:v:h"))!=-1)
 	{
 		switch (opt)
 		{
 			case 'm' :
 				options->ram_size=(uint64_t)atoi(optarg);
 				break;
-			case 'v' :
-				options->verbose_mode=1;
+			case 'l' :
+				options->log_level=atoi(optarg);
 				break;
 			case 'h' :
 				print_help();
-				exit(1);
+				exit(0);
 				break;
 			default :
 				print_help();
