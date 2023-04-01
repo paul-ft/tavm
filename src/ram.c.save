@@ -1,0 +1,9 @@
+#includes <stdint.h>
+#includes <stdio.h>
+
+#includes "ram.h"
+
+ram* init_ram(int size)
+{
+return (ram*){.siez=size; .
+}
