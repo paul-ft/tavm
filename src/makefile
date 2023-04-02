@@ -1,8 +1,8 @@
 CC=gcc
-CFLAGS=-W -Wall -Werror -c -ansi
+CFLAGS=-W -Wall -Werror -c -std=gnu99 -pedantic -g
 LDFLAGS=
 EXEC=tavm
-SRC=$(wildcard *.c)
+SRC=$(shell find ./ -type f -name '*.c')
 OBJ=$(SRC:.c=.o);
 
 all:$(EXEC)

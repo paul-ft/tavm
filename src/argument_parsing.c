@@ -11,7 +11,7 @@ struct arguments* parse(int argc, char *argv[])
 {
 	int opt=0;
 	struct arguments *options=&(struct arguments){.ram_size=0, .log_level=7};
-	while ((opt=getopt(argc,argv,"m:v:h"))!=-1)
+	while ((opt=getopt(argc,argv,"m:l:h"))!=-1)
 	{
 		switch (opt)
 		{
