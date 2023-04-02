@@ -6,6 +6,7 @@
 #include "ram.h"
 #include "argument_parsing.h"
 #include "log.c/src/log.h"
+#include "version.h"
 
 int main (int argc, char *argv[])
 {
@@ -22,6 +23,8 @@ int main (int argc, char *argv[])
 		log_set_quiet(1);
 	}
 	log_trace("Arguments parsed : ram_size=%llu & log_level=%d", options->ram_size, options->log_level);
+	printf("\nTAVM %s\n\n", VER);
+	log_info("Booting...");
 /*Ram init*/
 
 	struct ram* memory=malloc(sizeof(struct ram)); /*creating a struct for the ram (see ram.h)*/

@@ -3,40 +3,68 @@
 #include <stdint.h>
 
 #include "ram.h"
+#include "log.c/src/log.h"
 
 /*init*/
 uint8_t ram_init(struct ram *memory, uint64_t size)
 {
+	log_info("RAM : initializing memory...");
 	memory->size=size;
-	printf("Allocating %llu bytes...\n", memory->size);
+	log_debug("RAM : allocating %llu bytes...", memory->size);
 	memory->data_array=calloc(memory->size, sizeof(uint8_t));
 	if(memory->data_array==0)
 	{
-		printf("Error : unable to allocate memory\n");
+		log_fatal("RAM : unable to allocate memory");
 		exit(1);
 	};
-	printf("Memory succesfully allocated.\n");
+	log_info("RAM : memory succesfully initialized");
 	return 0;
 }
 
 /* free*/
 void ram_free(struct ram *memory) /*like the previous one but it free the ram*/
 {
-	printf("Freeing memory (%d bytes)... ", (int)memory->size); /*dirty logging*/
+	log_debug("RAM : freeing memory (%d bytes)... ", (int)memory->size); /*dirty logging*/
 	free ((void *)memory->data_array); /*freeing the memory*/
-	printf("OK\n"); /*dirty logging*/
+	log_trace("RAM : done\n"); /*dirty logging*/
 }
 
 /* read/write*/
-uint8_t ram_write(struct ram *memory, uint64_t addr, uint8_t data, uint8_t verbose) /*write a byte at a specific address*/
+
+uint8_t ram_write(struct ram *memory, uint64_t addr, uint8_t *data, uint64_t lenght)
 {
-	if(addr>memory->size)
+	uint64_t i=0;
+	while(i<lenght)
 	{
-		return 1;
+		if(addr+i>memory->size)
+		{
+			log_debug("Unable to write at %llu : out of memory", addr+i);
+			return 1;
+		}
+		log_trace("Writing %d at %llu", data[i], addr+i);
+		memory->data_array[addr+i]=data[i];
+		i++;
 	}
-	memory->data_array[addr]=data;
-	if(verbose){printf("OK\n");};
-	return 1;
+	return 0;
 }
 
-/* read/write buffer*/
+uint8_t *ram_read(struct ram *memory, uint64_t addr, uint64_t lenght)
+{
+	uint8_t *buffer=calloc(sizeof(uint8_t), lenght);
+	uint64_t i=0;
+	while(i<lenght)
+	{
+		if(addr+i>memory->size)
+		{
+			log_trace("Unable to read at %llu : out of memory", addr+i);
+			return buffer;
+		}
+		else
+		{
+			log_trace("Reading at %llu", addr+i);
+			buffer[i]=memory->data_array[addr+i];
+		}
+		i++;
+	}
+	return buffer;
+}
