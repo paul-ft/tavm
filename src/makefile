@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-W -Wall -Werror -c -std=gnu99 -pedantic -g
+CFLAGS=-W -Wall -Werror -c -std=gnu99 -pedantic -g -DLOG_USE_COLOR
 LDFLAGS=
 EXEC=tavm
 SRC=$(shell find ./ -type f -name '*.c')
