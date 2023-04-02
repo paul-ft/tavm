@@ -2,4 +2,4 @@
 #define VER_H
 #endif
 
-#define VER "0.1 beta" //just to be able to change it easily
+#define VER "beta 0.1 --- developpement version" //just to be able to change it easily

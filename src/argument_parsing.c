@@ -6,11 +6,14 @@
 
 #include "argument_parsing.h"
 #include "help.h"
+#include "log.c/src/log.h"
+#include "version.h"
 
 void parse_argv(int argc, char *argv[], struct opt *options)
 {
 	int opt=0;
-	while ((opt=getopt(argc,argv,"m:l:h"))!=-1)
+	options->log_level=2;
+	while ((opt=getopt(argc,argv,"m:l:hv"))!=-1)
 	{
 		switch (opt)
 		{
@@ -24,6 +27,10 @@ void parse_argv(int argc, char *argv[], struct opt *options)
 				print_help();
 				exit(0);
 				break;
+			case 'v' :
+				printf("%s\n", VER);
+				exit(0);
+				break;
 			default :
 				print_help();
 				exit(1);
@@ -32,7 +39,7 @@ void parse_argv(int argc, char *argv[], struct opt *options)
 	}
 	if(options->ram_size==0)
 	{
-		printf("Unable to boot without ram.\nUse tavm -h for more informations.\n");
+		log_fatal("Unable to boot without ram. Use tavm -h for more informations.\n");
 		exit(1);
 	}
 }

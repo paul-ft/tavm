@@ -4,10 +4,10 @@
 
 #include <stdint.h>
 
-struct 	arguments /*struct tu put arguments from command line in it*/
+struct 	opt /*struct tu put arguments from command line in it*/
 {
 	uint64_t ram_size;
 	int log_level;
 };
 
-struct arguments *parse(int argc, char *argv[]);
+void parse_argv(int argc, char *argv[], struct opt *options);
