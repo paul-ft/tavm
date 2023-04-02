@@ -7,10 +7,9 @@
 #include "argument_parsing.h"
 #include "help.h"
 
-struct arguments* parse(int argc, char *argv[])
+void parse_argv(int argc, char *argv[], struct opt *options)
 {
 	int opt=0;
-	struct arguments *options=&(struct arguments){.ram_size=0, .log_level=7};
 	while ((opt=getopt(argc,argv,"m:l:h"))!=-1)
 	{
 		switch (opt)
@@ -36,5 +35,4 @@ struct arguments* parse(int argc, char *argv[])
 		printf("Unable to boot without ram.\nUse tavm -h for more informations.\n");
 		exit(1);
 	}
-	return options;
 }
