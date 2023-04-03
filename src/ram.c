@@ -38,10 +38,10 @@ uint8_t ram_write(struct ram *memory, uint64_t addr, uint8_t *data, uint64_t len
 	{
 		if(addr+i>memory->size)
 		{
-			log_debug("Unable to write at %llu : out of memory", addr+i);
+			log_debug("Unable to write at %#llx : out of memory", addr+i);
 			return 1;
 		}
-		log_trace("Writing %d at %llu", data[i], addr+i);
+		log_trace("Writing %d at %#llx", data[i], addr+i);
 		memory->data_array[addr+i]=data[i];
 		i++;
 	}
@@ -56,12 +56,12 @@ uint8_t *ram_read(struct ram *memory, uint64_t addr, uint64_t lenght)
 	{
 		if(addr+i>memory->size)
 		{
-			log_trace("Unable to read at %llu : out of memory", addr+i);
+			log_trace("Unable to read at %#llx : out of memory", addr+i);
 			return buffer;
 		}
 		else
 		{
-			log_trace("Reading at %llu", addr+i);
+			log_trace("Reading at %#llx", addr+i);
 			buffer[i]=memory->data_array[addr+i];
 		}
 		i++;
