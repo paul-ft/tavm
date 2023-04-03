@@ -29,10 +29,12 @@ int main (int argc, char *argv[])
 
 	struct ram* memory=malloc(sizeof(struct ram)); /*creating a struct for the ram (see ram.h)*/
 	ram_init(memory, options->ram_size); /*initializing the memory (see ram.c)*/
+	ram_write(memory, 30,(uint8_t*)"Hello", 5);
 
 /* leaving :*/
 	ram_free(memory);
 	free((void*)memory);
+	free_opt(options);
 	sleep(1);
 	printf("Goodbye \n"); /*it's important to be polite with the user*/
 	return 0; /*no comment needed i guess*/
