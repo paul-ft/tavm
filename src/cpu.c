@@ -3,6 +3,7 @@
 #include "log.c/src/log.h"
 #include "ram.h"
 #include "cpu.h"
+#include "errors.h"
 
 void exec(struct ram *memory, uint64_t *registers)
 {
@@ -44,7 +45,7 @@ void exec_instruction(struct ram *memory, uint64_t *registers, struct instructio
 	{
 		case 0x00 :
 		{
-			log_trace("Load");
+			log_trace("Instruction : load");
 			uint8_t *str=ram_read(memory, inst->var, 1);
 			registers[inst->reg1]=(uint64_t)str[1];
 			break;
@@ -141,6 +142,11 @@ void exec_instruction(struct ram *memory, uint64_t *registers, struct instructio
 		}
 		case 0x24 :
 		{
+			if(inst->reg2==0)
+			{
+				registers[3]=DIVISION_BY_0;
+				break;
+			}
 			registers[inst->reg1]=registers[inst->reg2]/registers[inst->reg3];
 			registers[1]++;
 			memory->data_array[registers[4]]=registers[inst->reg2]/registers[inst->reg2];
