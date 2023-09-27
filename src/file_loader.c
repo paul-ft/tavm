@@ -15,7 +15,7 @@ void load_file_in_ram(struct ram *memory, uint64_t addr, uint8_t *file_name)
 		log_error("Unable to open %s", file_name);
 	}
 	int i=0;
-	signed char a=1;
+	int a=1;
 	while(a!=EOF)
 	{
 		a=fgetc(file);
