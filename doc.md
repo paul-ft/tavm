@@ -14,9 +14,10 @@
 * R1/SP : stack pointer (0x1)
 * R2/CP : configuration pointer (0x2) (*see lower for more informations*)
 * R3/ER : error register (0x3)
-* R4 to R15 : generic registers (0x4 to 0xF)
+* R4 : condition register (0x4) (*see lower for more informations*)
+* R5 to R15 : generic registers (0x5 to 0xF)
 
-## Condition bits:
+## Condition bits (*not supported yet*):
 * The condition bits are the first 4 bits of the 2nd byte of an instruction. If thir value is different of 0x0, the instruction will only be executed if R4 (condition register) is himself different of 0.
 
 ## Instruction set :
