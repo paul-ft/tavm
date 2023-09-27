@@ -5,8 +5,10 @@
 
 #include "ram.h"
 #include "argument_parsing.h"
+#include "file_loader.h"
 #include "log.c/src/log.h"
 #include "version.h"
+#include "cpu.h"
 
 int main (int argc, char *argv[])
 {
@@ -29,8 +31,23 @@ int main (int argc, char *argv[])
 
 	struct ram* memory=malloc(sizeof(struct ram)); /*creating a struct for the ram (see ram.h)*/
 	ram_init(memory, options->ram_size); /*initializing the memory (see ram.c)*/
-	ram_write(memory, 30,(uint8_t*)"Hello", 5);
+//	ram_write(memory, 0,(uint8_t*)"Hello", 10);
+//	log_trace("%s", ram_read(memory, 0, 10));
 
+/*Loading files in ram*/
+	load_files(memory, options->first_file);
+	log_trace("%s",ram_read(memory, 0, 3));
+
+/*Creating registers (yes its dirty but i dont care)*/
+	uint64_t *registers=calloc(sizeof(uint64_t), 16);
+	registers[1]=registers[2]=registers[3]=registers[4]=registers[5]=registers[6]=registers[7]=
+	registers[8]=registers[9]=registers[10]=registers[11]=registers[12]=registers[13]=registers[14];
+	registers[0]=registers[15]=0;
+	while(registers[15]==0)
+	{
+		exec(memory, registers);
+//		break;
+	}
 /* leaving :*/
 	ram_free(memory);
 	free((void*)memory);

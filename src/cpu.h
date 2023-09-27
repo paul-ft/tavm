@@ -13,3 +13,4 @@ struct instruction
 };
 
 void exec(struct ram *memory, uint64_t *registers);
+void exec_instruction(struct ram *memory, uint64_t *registers, struct instruction *inst);

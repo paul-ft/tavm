@@ -6,6 +6,7 @@
 
 void exec(struct ram *memory, uint64_t *registers)
 {
+	log_debug("Executing instruction at  %llx", registers[0x0]);
 	struct instruction *inst=malloc(sizeof(struct instruction));
 	inst->opcode=memory->data_array[registers[0x0]];
 	log_trace("Parsing instruction at %llx -- opcode : %x", registers[0x0], inst->opcode);
@@ -32,7 +33,9 @@ void exec(struct ram *memory, uint64_t *registers)
 	{
 		inst->var=inst->var<<8|tmp[i];
 	}
-	log_trace("Parsing instruction at %llc -- var : %llx", registers[0x0], inst->var);
+	log_trace("Parsing instruction at %llx -- var : %llx", registers[0x0], inst->var);
+	exec_instruction(memory, registers, inst);
+	registers[0x0]++;
 }
 
 void exec_instruction(struct ram *memory, uint64_t *registers, struct instruction *inst)
@@ -41,6 +44,7 @@ void exec_instruction(struct ram *memory, uint64_t *registers, struct instructio
 	{
 		case 0x00 :
 		{
+			log_trace("Load");
 			uint8_t *str=ram_read(memory, inst->var, 1);
 			registers[inst->reg1]=(uint64_t)str[1];
 			break;
@@ -149,6 +153,7 @@ void exec_instruction(struct ram *memory, uint64_t *registers, struct instructio
 		}
 		case 0x30 :
 		{
+			log_trace("Instruction : true");
 			registers[4]=1;
 			break;
 		}
@@ -195,6 +200,8 @@ void exec_instruction(struct ram *memory, uint64_t *registers, struct instructio
 		}
 		case 0xFF :
 		{
+			log_trace("Instruction : break");
+			registers[15]=1;
 			break;
 		}
 
