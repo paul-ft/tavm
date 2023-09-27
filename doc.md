@@ -103,6 +103,5 @@
 ## Errors 
 * The error register can tak 16 differents values :
 	* 0x0 : no error :)
-	* 0x1 : permissions waning : a segment code try to write or read in a part of the memory where he is not able too
-	* 0x2 : unused parameter warning : you are giving too many parameters to an instruction
-	* 
+	* 0x1 : division by zero
+	* 0x2 : reading or writing out of memory (not supported yet)
