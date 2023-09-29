@@ -23,8 +23,8 @@
 ## Instruction set :
 
 ### 0x0X : data management 
-* 0x00 : load (load value stored in memory at [variable] in [register1])
-* 0x01 : set (set value stored in memory at [variable] to [register1])
+* 0x00 : set (set value stored in memory at [variable] to [register1])
+* 0x01 : load (load value stored in memory at [variable] in [register1])
 * 0x02 : move (set [register 1] to [register 2])
 * 0x03 : define (set [register 1] to [variable])
 * 0x04 : push (push [register 1] on the stack)
