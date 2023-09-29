@@ -36,5 +36,5 @@ void load_files(struct ram *memory, struct file *first_file)
 		load_file_in_ram(memory, cour->addr, (uint8_t*)cour->fname);
 		cour=cour->next;
 	}
+	log_info("Files successfully loaded in ram");
 }
-
