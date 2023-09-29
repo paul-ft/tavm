@@ -37,6 +37,12 @@ void exec(struct ram *memory, uint64_t *registers)
 //	log_trace("Parsing instruction at %llx -- var : %llx", registers[0x0], inst->var);
 	exec_instruction(memory, registers, inst);
 	registers[0x0]+=11;
+	log_trace("r0 : %llx", registers[0x0]);
+	if(registers[0x0]>memory->size){registers[15]=1;log_fatal("End of memory");}
+	else
+	{
+		log_trace("r0 : %llx ; size of ram : %llx", registers[0x0], memory->size);
+	}
 }
 
 void exec_instruction(struct ram *memory, uint64_t *registers, struct instruction *inst)
@@ -49,17 +55,17 @@ void exec_instruction(struct ram *memory, uint64_t *registers, struct instructio
 		{
 			case 0x00 :
 			{
-				log_trace("Instruction : load -- register 1=R%x ; var=0x%llx",inst->reg1,inst->var);
-				uint8_t *str=ram_read(memory, inst->var, 1);
-				registers[inst->reg1]=(uint64_t)str[1];
-				break;
-			}
-			case 0x01 :
-			{
 				log_trace("Instruction : set -- register 1=R%x ; var =0x%llx", inst->reg1, inst->var);
 				uint8_t a=(uint8_t)registers[inst->reg1];
 				uint8_t arr[]={a};
 				ram_write(memory, inst->var, arr, 1);
+				break;
+			}
+			case 0x01 :
+			{
+				log_trace("Instruction : load -- register 1=R%x ; var=0x%llx",inst->reg1,inst->var);
+				uint8_t *str=ram_read(memory, inst->var, 1);
+				registers[inst->reg1]=(uint64_t)str[1];
 				break;
 			}
 			case 0x02 :
