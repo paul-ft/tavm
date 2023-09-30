@@ -23,8 +23,8 @@
 ## Instruction set :
 
 ### 0x0X : data management 
-* 0x00 : set (set value stored in memory at [variable] to [register1])
-* 0x01 : load (load value stored in memory at [variable] in [register1])
+* 0x00 : set (if [register 3]==0 : set value stored in memory at [variable] to [register1] --- if [register 3]!=0 : set value stored in memory at [register 2] to [register 1])
+* 0x01 : load (if [register 3]==0 : load value stored in memory at [variable] in [register1] --- if [register 3]!=0 : load the value stored in memory at [register 2] in [register 1])
 * 0x02 : move (set [register 1] to [register 2])
 * 0x03 : define (set [register 1] to [variable])
 * 0x04 : push (push [register 1] on the stack)
@@ -56,6 +56,12 @@
 * 0x35 : higher or equal (set R4 to 1 if [register 1]>=[register 2])
 * 0x36 : lower (set R4 to 1 if [register 1]<[register 2])
 * 0x37 : lower or equal (set R4 to 1 [register 1]=<[register 1])
+
+### 0x4X : io
+* 0x40 : send (send to the output port number [register 1] the value stored in memory at the address binded with the port)
+* 0x41 : read (read in input port number [register 1] and store the value in memory at the address binded with the port)
+* 0x42 : bind op (bind the output port number [register 1] to the address [register 2])
+* 0x43 : bind ip (bind the input port number [register 1] to the address [register 2])
 
 ### 0xFF : break
 * 0xFF : break (shut down the virtual machine)

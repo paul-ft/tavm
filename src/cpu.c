@@ -55,17 +55,37 @@ void exec_instruction(struct ram *memory, uint64_t *registers, struct instructio
 		{
 			case 0x00 :
 			{
-				log_trace("Instruction : set -- register 1=R%x ; var =0x%llx", inst->reg1, inst->var);
-				uint8_t a=(uint8_t)registers[inst->reg1];
-				uint8_t arr[]={a};
-				ram_write(memory, inst->var, arr, 1);
+				if(inst->reg3==0)
+				{
+					log_trace("Instruction : set -- register 1=R%x ; var =0x%llx", inst->reg1, inst->var);
+					uint8_t a=(uint8_t)registers[inst->reg1];
+					uint8_t arr[]={a};
+					ram_write(memory, inst->var, arr, 1);
+				}
+				else
+				{
+					log_trace("Instruction : set -- register 1=R%x ; var =0x%llx", inst->reg1, inst->var);
+					uint8_t a=(uint8_t)registers[inst->reg1];
+					uint8_t arr[]={a};
+					ram_write(memory, registers[inst->reg2], arr, 1);
+				}
 				break;
 			}
 			case 0x01 :
 			{
-				log_trace("Instruction : load -- register 1=R%x ; var=0x%llx",inst->reg1,inst->var);
-				uint8_t *str=ram_read(memory, inst->var, 1);
-				registers[inst->reg1]=(uint64_t)str[1];
+				if(inst->reg3!=0)
+				{
+					log_trace("Instruction : load -- register 1=R%x ; var=0x%llx",inst->reg1,inst->var);
+					uint8_t *str=ram_read(memory, inst->var, 1);
+					registers[inst->reg1]=(uint64_t)str[1];
+				}
+				else
+				{
+					log_trace("Instruction : load -- register 1=R%x ; var=0x%llx",inst->reg1,inst->var);
+					uint8_t *str=ram_read(memory, registers[inst->reg2], 1);
+					registers[inst->reg1]=(uint64_t)str[1];
+
+				}
 				break;
 			}
 			case 0x02 :
