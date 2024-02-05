@@ -17,7 +17,7 @@
 * R4 : condition register (0x4) (*see lower for more informations*)
 * R5 to R15 : generic registers (0x5 to 0xF)
 
-## Condition bits (*not supported yet*):
+## Condition bits :
 * The condition bits are the first 4 bits of the 2nd byte of an instruction. If thir value is different of 0x0, the instruction will only be executed if R4 (condition register) is himself different of 0.
 
 ## Instruction set :
@@ -57,7 +57,7 @@
 * 0x36 : lower (set R4 to 1 if [register 1]<[register 2])
 * 0x37 : lower or equal (set R4 to 1 [register 1]=<[register 1])
 
-### 0x4X : io
+### 0x4X : io *(not supported yet)*
 * 0x40 : send (send to the output port number [register 1] the value stored in memory at the address binded with the port)
 * 0x41 : read (read in input port number [register 1] and store the value in memory at the address binded with the port)
 * 0x42 : bind op (bind the output port number [register 1] to the address [register 2])
