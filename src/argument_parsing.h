@@ -3,21 +3,23 @@
 #endif
 
 #include <stdint.h>
+#include <stdio.h>
 
 struct 	opt /*struct tu put arguments from command line in it*/
 {
 	uint64_t ram_size;
 	int log_level;
-	struct file *first_file;
+	struct port *first_file;
+	uint64_t boot_device;
 };
-struct file
+struct port
 {
-	uint64_t addr;
-	char *fname;
-	struct file *next;
+	FILE *file;
+	struct port *next;
+	uint8_t type;
+	uint64_t number;
 };
 
 
 void parse_argv(int argc, char *argv[], struct opt *options);
-void parse_file(char *str, struct file *ret);
 void free_opt(struct opt *options);

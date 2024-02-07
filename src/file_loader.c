@@ -5,29 +5,29 @@
 #include "ram.h"
 #include "log.c/src/log.h"
 #include "argument_parsing.h"
+#include "io.h"
 
-void load_file_in_ram(struct ram *memory, uint64_t addr, uint8_t *file_name)
+void load_bootfile_in_ram(struct ram *memory, struct opt *options)
 {
-	log_trace("Loading file %s at %llu", file_name, addr);
-	FILE *file=fopen((char *)file_name, "r");
-	if(file==NULL)
+	struct port *cour = options->first_file;
+	while(cour->number!=options->boot_device || cour->type==OUTPUT)
 	{
-		log_error("Unable to open %s", file_name);
+		cour=cour->next;
 	}
 	int i=0;
 	int a=1;
 	while(a!=EOF)
 	{
-		a=fgetc(file);
+		a=fgetc(cour->file);
 		if(a==EOF){break;}
 		uint8_t *cause_i_need_a_string = malloc(sizeof(uint8_t));
 		*cause_i_need_a_string=(uint8_t)a;
-		ram_write(memory, addr+i, cause_i_need_a_string, 1);
+		ram_write(memory, i, cause_i_need_a_string, 1);
 		i++;
 		free(cause_i_need_a_string);
 	}
 }
-
+/*
 void load_files(struct ram *memory, struct file *first_file)
 {
 	struct file *cour=first_file;
@@ -38,3 +38,4 @@ void load_files(struct ram *memory, struct file *first_file)
 	}
 	log_info("Files successfully loaded in ram");
 }
+*/

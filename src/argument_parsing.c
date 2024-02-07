@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "argument_parsing.h"
+#include "io.h"
 #include "help.h"
 #include "log.c/src/log.h"
 #include "version.h"
@@ -13,11 +14,12 @@
 void parse_argv(int argc, char *argv[], struct opt *options)
 {
 	int opt=0;
-	int nfiles=0;
+	int nin=0;
+	int nout=0;
 	options->log_level=2;
-	struct file *cour;
-	options->first_file=malloc(sizeof(struct file));
-	while ((opt=getopt(argc,argv,"m:l:hvf:"))!=-1)
+	struct port *cour;
+	options->first_file=malloc(sizeof(struct port));
+	while ((opt=getopt(argc,argv,"m:l:hvi:o:b:"))!=-1)
 	{
 		switch (opt)
 		{
@@ -31,20 +33,46 @@ void parse_argv(int argc, char *argv[], struct opt *options)
 				print_help();
 				exit(0);
 				break;
-			case 'f' :
-				if(!nfiles)
+			case 'i' :
+				if(!nin&&!nout)
 				{
-					parse_file(optarg, options->first_file);
+					options->first_file->type=INPUT;
+					options->first_file->file=fopen(optarg, "r");
+					options->first_file->number=0;
 					cour=options->first_file;
 				}
 				else
 				{
-					struct file *new=malloc(sizeof(struct file));
-					parse_file(optarg, new);
+					struct port *new=malloc(sizeof(struct port));
+					new->type=INPUT;
+					new->file=fopen(optarg, "r");
+					new->number=nin;
 					cour->next=new;
 					cour=cour->next;
 				}
-				nfiles++;
+				nin++;
+				break;
+			case 'o' :
+				if(!nin&&!nout)
+				{
+					options->first_file->type=INPUT;
+					options->first_file->file=fopen(optarg, "w");
+					options->first_file->number=0;
+					cour=options->first_file;
+				}
+				else
+				{
+					struct port *new=malloc(sizeof(struct port));
+					new->type=INPUT;
+					new->file=fopen(optarg, "w");
+					new->number=nout;
+					cour->next=new;
+					cour=cour->next;
+				}
+				nout++;
+				break;
+			case 'b' :
+				options->boot_device=(uint64_t)atoi(optarg);
 				break;
 			case 'v' :
 				printf("%s\n", VER);
@@ -64,22 +92,15 @@ void parse_argv(int argc, char *argv[], struct opt *options)
 	}
 }
 
-void parse_file(char *str, struct file *ret)
-{
-	ret->fname=strtok(str, ":");
-	ret->addr=atoi(strtok(NULL,":"));
-	ret->next=NULL;
-}
-
 void free_opt(struct opt *options)
 {
-	struct file *cour=NULL;
-	struct file *next=NULL;
+	struct port *cour=NULL;
+	struct port *next=NULL;
 	cour=options->first_file;
 	int i=0;
 	while(cour!=NULL)
 	{
-		log_trace("Freeing file %d (%s)...", i, cour->fname);
+//		log_trace("Freeing file %d (%s)...", i, cour->fname);
 		next=cour->next;
 		free(cour);
 		cour=next;

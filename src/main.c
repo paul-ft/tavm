@@ -35,8 +35,7 @@ int main (int argc, char *argv[])
 //	log_trace("%s", ram_read(memory, 0, 10));
 
 /*Loading files in ram*/
-	load_files(memory, options->first_file);
-	log_trace("%s",ram_read(memory, 0, 3));
+	load_bootfile_in_ram(memory, options);
 
 /*Creating registers (yes its dirty but i dont care)*/
 	uint64_t *registers=calloc(sizeof(uint64_t), 16);
